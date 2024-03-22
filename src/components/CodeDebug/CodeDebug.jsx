@@ -17,8 +17,13 @@ export default function CodeDebug(){
 
           const genAI = new GoogleGenerativeAI(API_KEY);
           const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-    
-          const result = await model.generateContent(inputText);
+        const prompt = `"${inputText} , You are a great coder , now debug the code provided to you (there can be syntax error or any other error) and return response in the following format only :
+        Error : [what is the error] 
+        Error explaination : [explain the error]  
+        Solution : [How to fix that error]  "`
+
+        console.log(prompt)
+          const result = await model.generateContent(prompt);
           const text = result.response.text();
       
           setData(text)
@@ -32,9 +37,9 @@ export default function CodeDebug(){
         <>
         <h1>Code Debugger</h1>
         <h2>Your code helper!</h2>
-        <input
+        <textarea
           type="text"
-          style={{ width: 400 }}
+          style={{ width: 400 , height:500}}
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
         />
